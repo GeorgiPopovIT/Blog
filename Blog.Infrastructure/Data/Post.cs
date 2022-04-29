@@ -6,12 +6,13 @@ namespace Blog.Infrastructure.Data
     {
 
         public int Id { get; set; }
+        //testre
 
         [Required]
-        public string Title { get; set; } = null!;
+        public string? Title { get; set; }
 
         [Required]
-        public string Content { get; set; }
+        public string? Content { get; set; }
 
     }
 }
