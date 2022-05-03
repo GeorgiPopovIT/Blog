@@ -1,7 +1,7 @@
 ﻿
 namespace Blog.Infrastructure.Data
 {
-    public class BaseModel
+    public abstract class BaseModel
     {
         //some comment
         public DateTime CreatedOn { get; set; }
