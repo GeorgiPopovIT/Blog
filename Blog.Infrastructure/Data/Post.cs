@@ -6,7 +6,7 @@ namespace Blog.Infrastructure.Data
     {
 
         public int Id { get; set; }
-        //testre
+       
 
         [Required]
         public string? Title { get; set; }
