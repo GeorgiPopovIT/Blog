@@ -16,4 +16,6 @@ namespace Blog.Infrastructure
             base.OnModelCreating(builder);
         }
     }
+    // кур муr qnko
+    // янко е хуя ми 
 }
