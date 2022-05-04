@@ -13,9 +13,10 @@ namespace Blog.Infrastructure
 
         public DbSet<Reaction>? Reactions { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=Blog;Trusted_Connection=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=.;Database=Blog;Integrated Security=true;");
 
             base.OnConfiguring(optionsBuilder);
         }
@@ -25,6 +26,4 @@ namespace Blog.Infrastructure
             base.OnModelCreating(builder);
         }
     }
-    // кур муr qnko
-    // янко е хуя ми 
 }
