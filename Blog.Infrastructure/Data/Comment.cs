@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Infrastructure.Data
 {
@@ -10,12 +11,16 @@ namespace Blog.Infrastructure.Data
         [MaxLength(DataModelsConstants.MaxCommentLength)]
         public string? Content { get; set; }
 
+        //foreign key
         [Required]
-        public int PostId { get; set; }
-        public Post? Post { get; set; }
+        public string? UserId { get; set; }
+        public User User { get; set; } = null!;
 
         [Required]
-        public int UserId { get; set; }
-        public User? User { get; set; }
+        public int PostId { get; set; }
+
+       
+        [ForeignKey(nameof(PostId))]
+        public Post Post { get; set; } = null!;
     }
 }

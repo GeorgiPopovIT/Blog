@@ -7,11 +7,11 @@ namespace Blog.Infrastructure
     public class BlogDbContext : IdentityDbContext<User>
     {
 
-        public DbSet<Post>? Posts { get; set; }
+        public DbSet<Post> Posts { get; set; } = null!;
 
-        public DbSet<Comment>? Comments { get; set; }
+        public DbSet<Comment> Comments { get; set; } = null!;
 
-        public DbSet<Reaction>? Reactions { get; set; }
+        public DbSet<Reaction> Reactions { get; set; } = null!;
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -23,6 +23,21 @@ namespace Blog.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Comment>()
+                .HasOne(p => p.Post)
+                .WithMany(c => c.Comments)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Post>()
+                .HasMany(r => r.Reactions)
+                .WithOne(p => p.Post)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Post>()
+                .HasMany(c => c.Comments)
+                .WithOne(p => p.Post)
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(builder);
         }
     }
