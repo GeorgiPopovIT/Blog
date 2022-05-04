@@ -11,4 +11,6 @@ namespace Blog.Infrastructure
 
         public DbSet<Comment> Comments { get; set; }
     }
+    // кур муr qnko
+    // янко е хуя ми 
 }
