@@ -4,7 +4,6 @@ namespace Blog.Infrastructure.Data
 {
     public class Post : BaseModel
     {
-
         public int Id { get; set; }
 
 
@@ -16,6 +15,7 @@ namespace Blog.Infrastructure.Data
         public string? Content { get; set; }
 
         public bool IsVisible { get; set; }
+
 
         public ICollection<Comment> Comments { get; init; } = new HashSet<Comment>();
 

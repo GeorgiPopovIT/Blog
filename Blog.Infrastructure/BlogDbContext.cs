@@ -11,6 +11,15 @@ namespace Blog.Infrastructure
 
         public DbSet<Comment>? Comments { get; set; }
 
+        public DbSet<Reaction>? Reactions { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=.;Database=Blog;Trusted_Connection=True;MultipleActiveResultSets=true");
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
