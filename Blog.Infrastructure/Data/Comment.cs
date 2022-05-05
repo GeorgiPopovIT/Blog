@@ -5,7 +5,7 @@ namespace Blog.Infrastructure.Data
 {
     public class Comment: BaseModel
     {
-        public int Id { get; set; }
+       // public int Id { get; set; }
 
         [Required]
         [MaxLength(DataModelsConstants.MaxCommentLength)]

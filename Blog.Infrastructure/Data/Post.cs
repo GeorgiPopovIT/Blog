@@ -4,7 +4,7 @@ namespace Blog.Infrastructure.Data
 {
     public class Post : BaseModel
     {
-        public int Id { get; set; }
+       // public int Id { get; set; }
 
         [Required]
         [MaxLength(DataModelsConstants.MaxTitleLength)]

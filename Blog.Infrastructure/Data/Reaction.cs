@@ -4,7 +4,7 @@ namespace Blog.Infrastructure.Data
 {
     public class Reaction : BaseModel
     {
-        public int Id { get; set; }
+       // public int Id { get; set; }
 
         //foreign key
         [Required]

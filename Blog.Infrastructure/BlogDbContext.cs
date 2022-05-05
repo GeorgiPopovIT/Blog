@@ -6,9 +6,11 @@ namespace Blog.Infrastructure
 {
     public class BlogDbContext : IdentityDbContext<User>
     {
-        public BlogDbContext(DbContextOptions<BlogDbContext> dbContextOptions)
-            :base(dbContextOptions)
+        public BlogDbContext()
         {}
+        public BlogDbContext(DbContextOptions<BlogDbContext> dbContextOptions)
+            : base(dbContextOptions)
+        { }
 
         public DbSet<Post> Posts { get; set; } = null!;
 
