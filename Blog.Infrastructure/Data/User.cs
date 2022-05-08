@@ -6,10 +6,7 @@ namespace Blog.Infrastructure.Data
     public class User : IdentityUser
     {
         [Required]
-        public string FirstName { get; set; } = null!;
-
-        [Required]
-        public string LastName { get; set; } = null!;
+        public string FullName { get; set; } = null!;
 
         public string? ImageProfile { get; set; }
 
