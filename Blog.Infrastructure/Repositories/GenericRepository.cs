@@ -17,9 +17,9 @@ namespace Blog.Infrastructure.Repositories
         }
         protected DbSet<TEntity> DbSet { get; set; }
 
-        public IEnumerable<TEntity> GetAll() => this.DbSet.ToList();
+        public async Task <IEnumerable<TEntity>> GetAllAsync() => await this.DbSet.ToListAsync();
 
-        public TEntity? GetById(int id) => this.DbSet.FirstOrDefault(x => x.Id == id);
+        public async Task<TEntity?> GetByIdAsync(int id) => await this.DbSet.FirstOrDefaultAsync(x => x.Id == id);
 
         public void Delete(TEntity model) => this.DbSet.Remove(model);
     }

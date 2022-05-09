@@ -1,10 +1,12 @@
 ﻿
 namespace Blog.Infrastructure.Repositories
 {
-    public interface IRepository<TEntity> 
+    public interface IRepository<TEntity>
     {
-        public IEnumerable<TEntity> GetAll();
+        public Task<IEnumerable<TEntity>> GetAllAsync();
 
-        //public TEntity GetById(int id);
+        public Task<TEntity?> GetByIdAsync(int id);
+
+        public void Delete(TEntity model);
     }
 }
