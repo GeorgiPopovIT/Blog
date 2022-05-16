@@ -1,11 +1,15 @@
 ﻿@model CreatePostModel
+@{
+    ViewData["Title"] = "Create post";
+}
+
 <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">Quick Example</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form>
+              <form asp-controller="Post" asp-action="CreatePost" enctype="multipart/form-data" method="post">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>

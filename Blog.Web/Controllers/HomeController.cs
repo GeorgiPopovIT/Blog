@@ -15,6 +15,12 @@ namespace Blog.Web.Controllers
 
         public IActionResult Index()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+
+                return RedirectToAction("AllPosts", "Post");
+            }
+
             return View();
         }
 

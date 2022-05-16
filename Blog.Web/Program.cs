@@ -1,3 +1,5 @@
+using Blog.Core.Contracts;
+using Blog.Core.Services;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Repositories;
@@ -30,6 +32,7 @@ builder.Services.AddControllersWithViews()
     .AddCookieTempDataProvider();
 
 builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
+builder.Services.AddTransient<IPostService, PostService>();
 
 
 var app = builder.Build();
