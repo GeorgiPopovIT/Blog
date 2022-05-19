@@ -10,16 +10,14 @@ namespace Blog.Core.Services
 {
     public class PostService : IPostService
     {
-        private readonly IRepository<Post> postRepository;
         private readonly BlogDbContext dbContext;
 
-        public PostService(IRepository<Post> postRepository, BlogDbContext dbContext)
+        public PostService(BlogDbContext dbContext)
         {
-            this.postRepository = postRepository;
             this.dbContext = dbContext;
         }
 
-        public void CreatePost()
+        public void CreatePost(CreatePostModel model)
         {
 
         }

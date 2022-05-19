@@ -18,6 +18,8 @@ namespace Blog.Infrastructure
 
         public DbSet<Reaction> Reactions { get; set; } = null!;
 
+        public DbSet<Image> Images { get; set; } = null!;
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -40,6 +42,11 @@ namespace Blog.Infrastructure
 
             builder.Entity<Post>()
                 .HasMany(c => c.Comments)
+                .WithOne(p => p.Post)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Post>()
+                .HasMany(i => i.Images)
                 .WithOne(p => p.Post)
                 .OnDelete(DeleteBehavior.Restrict);
 

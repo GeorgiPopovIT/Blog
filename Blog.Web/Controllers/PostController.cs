@@ -20,6 +20,9 @@ namespace Blog.Web.Controllers
         [HttpPost]
         public IActionResult CreatePost(CreatePostModel model)
         {
+            this.postService.CreatePost(model);
+
+
             return View();
         }
 

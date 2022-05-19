@@ -146,7 +146,7 @@ namespace Blog.Web.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return RedirectToAction("AllPosts", "Post");
+                        return RedirectToAction("AllPosts", "Post", new { area = "" });
                     }
                 }
                 foreach (var error in result.Errors)

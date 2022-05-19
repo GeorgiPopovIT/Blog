@@ -16,6 +16,7 @@ namespace Blog.Core.Models.Posts
         public string? Content { get; set; }
 
         [AllowedExtensions(new string[] { ".jpg", ".png", ".jpeg" })]
+        [Display(Name ="Image input (optional)")]
         public IFormFile? PhotoPost { get; set; }
     }
 }

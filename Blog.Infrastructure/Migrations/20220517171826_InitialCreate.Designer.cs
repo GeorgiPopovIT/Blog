@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20220504211201_InitialCreate")]
+    [Migration("20220517171826_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,42 @@ namespace Blog.Infrastructure.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("Blog.Infrastructure.Data.Image", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AddedByUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddedByUserId")
+                        .IsUnique();
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("Blog.Infrastructure.Data.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -76,9 +112,6 @@ namespace Blog.Infrastructure.Migrations
 
                     b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
-
-                    b.Property<string>("PhotoPost")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -147,6 +180,14 @@ namespace Blog.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageProfile")
                         .HasColumnType("nvarchar(max)");
@@ -349,6 +390,25 @@ namespace Blog.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Blog.Infrastructure.Data.Image", b =>
+                {
+                    b.HasOne("Blog.Infrastructure.Data.User", "AddedByUser")
+                        .WithOne("Image")
+                        .HasForeignKey("Blog.Infrastructure.Data.Image", "AddedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blog.Infrastructure.Data.Post", "Post")
+                        .WithMany("Images")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AddedByUser");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("Blog.Infrastructure.Data.Post", b =>
                 {
                     b.HasOne("Blog.Infrastructure.Data.User", "User")
@@ -434,12 +494,17 @@ namespace Blog.Infrastructure.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("Images");
+
                     b.Navigation("Reactions");
                 });
 
             modelBuilder.Entity("Blog.Infrastructure.Data.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Image")
+                        .IsRequired();
 
                     b.Navigation("Posts");
 

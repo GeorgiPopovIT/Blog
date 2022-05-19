@@ -31,7 +31,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddControllersWithViews()
     .AddCookieTempDataProvider();
 
-builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
+//builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 builder.Services.AddTransient<IPostService, PostService>();
 
 

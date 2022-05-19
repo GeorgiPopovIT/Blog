@@ -2,7 +2,7 @@
 
 namespace Blog.Infrastructure.Data
 {
-    public class Reaction : BaseModel
+    public class Reaction : BaseModel<int>
     {
        // public int Id { get; set; }
 

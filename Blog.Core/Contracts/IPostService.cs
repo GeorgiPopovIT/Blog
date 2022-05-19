@@ -4,7 +4,7 @@ namespace Blog.Core.Contracts
 {
     public interface IPostService
     {
-        public void CreatePost();
+        public void CreatePost(CreatePostModel model);
 
         Task<IEnumerable<ListSinglePostModel>> GetAllPosts();
     }

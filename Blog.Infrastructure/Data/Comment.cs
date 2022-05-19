@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Infrastructure.Data
 {
-    public class Comment: BaseModel
+    public class Comment: BaseModel<int>
     {
-       // public int Id { get; set; }
 
         [Required]
         [MaxLength(DataModelsConstants.MaxCommentLength)]
