@@ -15,13 +15,15 @@ namespace Blog.Web.Controllers
 
         public IActionResult Index()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+
+                return RedirectToAction("AllPosts", "Post");
+            }
+
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

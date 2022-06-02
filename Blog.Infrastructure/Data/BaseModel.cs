@@ -1,11 +1,15 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace Blog.Infrastructure.Data
 {
-    public class BaseModel
+    public abstract class BaseModel<T>
     {
         //some comment
-        public DateTime CreatedOn { get; set; }
+        [Key]
+        public T? Id { get; set; }
 
-        public DateTime UpdatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
+
+        public DateTime? UpdatedOn { get; set; }
     }
 }

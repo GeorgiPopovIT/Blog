@@ -6,11 +6,51 @@ namespace Blog.Infrastructure
 {
     public class BlogDbContext : IdentityDbContext<User>
     {
-        
-        public DbSet<Post> Posts { get; set; }
+        public BlogDbContext()
+        {}
+        public BlogDbContext(DbContextOptions<BlogDbContext> dbContextOptions)
+            : base(dbContextOptions)
+        { }
 
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Post> Posts { get; set; } = null!;
+
+        public DbSet<Comment> Comments { get; set; } = null!;
+
+        public DbSet<Reaction> Reactions { get; set; } = null!;
+
+        public DbSet<Image> Images { get; set; } = null!;
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=.;Database=Blog;Integrated Security=true;");
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Comment>()
+                .HasOne(p => p.Post)
+                .WithMany(c => c.Comments)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Post>()
+                .HasMany(r => r.Reactions)
+                .WithOne(p => p.Post)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Post>()
+                .HasMany(c => c.Comments)
+                .WithOne(p => p.Post)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Post>()
+                .HasMany(i => i.Images)
+                .WithOne(p => p.Post)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(builder);
+        }
     }
-    // кур муr qnko
-    // янко е хуя ми 
 }

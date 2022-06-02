@@ -1,8 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    Layout = "_Layout";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4" style="color:white">Welcome to Blog G&M</h1>
+
 </div>
+<div class = "text-center">
+    <a asp-area="Identity" asp-page="/Account/Register" class ="btn btn-primary">
+        Sign Up
+    </a>
+    <a asp-area="Identity" asp-page="/Account/Login" class = "btn btn-secondary">
+        Sign In
+    </a>
+</div>
+
+@section Scripts{
+    <script>
+           const body = document.getElementsByTagName('body')[0];
+
+           body.classList.add('backgroundImage');
+    </script>
+}
