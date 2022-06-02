@@ -5,7 +5,7 @@ namespace Blog.Core.Services
 {
     public class ImageService : IImageService
     {
-        public void Process(string directoryPath,string physicalPath,IFormFile currFile)
+        public async Task Process(string directoryPath, string physicalPath, IFormFile currFile)
         {
             //var path = Path.Combine(directoryPath,)
             if (!Directory.Exists(directoryPath))
@@ -16,7 +16,7 @@ namespace Blog.Core.Services
 
             using (FileStream stream = new FileStream(physicalPath, FileMode.OpenOrCreate))
             {
-                 currFile.CopyTo(stream);
+                await currFile.CopyToAsync(stream);
             }
         }
     }

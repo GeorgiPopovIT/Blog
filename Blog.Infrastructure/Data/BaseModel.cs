@@ -8,7 +8,7 @@ namespace Blog.Infrastructure.Data
         [Key]
         public T? Id { get; set; }
 
-        public DateTime? CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedOn { get; set; }
     }

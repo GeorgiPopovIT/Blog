@@ -10,8 +10,8 @@ namespace Blog.Infrastructure.Data
             this.Id = Guid.NewGuid().ToString();
         }
 
-        [Required]
-        public string? ImageName { get; set; }
+        
+        public string? ImageName { get; set; } 
 
         [Required]
         public string? Extension { get; set; }

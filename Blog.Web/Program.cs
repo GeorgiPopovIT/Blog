@@ -33,7 +33,7 @@ builder.Services.AddControllersWithViews()
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 builder.Services.AddTransient<IPostService, PostService>();
-
+builder.Services.AddTransient<IImageService,ImageService>();
 
 var app = builder.Build();
 

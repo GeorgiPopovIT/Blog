@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Contracts;
 using Blog.Core.Models.Posts;
+using Blog.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
@@ -7,10 +8,12 @@ namespace Blog.Web.Controllers
     public class PostController : Controller
     {
         private readonly IPostService postService;
+        private readonly IWebHostEnvironment environment;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IWebHostEnvironment environment)
         {
             this.postService = postService;
+            this.environment = environment;
         }
         public IActionResult CreatePost()
         {
@@ -18,12 +21,20 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePost(CreatePostModel model)
+        public async Task<IActionResult> CreatePost(CreatePostModel model)
         {
-            this.postService.CreatePost(model);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var directorySavePath = this.environment.WebRootPath + AppExtension.DirectoryPathSaveImage;
+            var userId = AppExtension.GetUserId(this.User);
 
+            await this.postService.CreatePost(model, userId, directorySavePath);
 
-            return View();
+            ViewData["SuccessAdded"] = "Successfully added post.";
+
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> AllPosts()

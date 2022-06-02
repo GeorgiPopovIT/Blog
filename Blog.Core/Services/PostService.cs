@@ -11,19 +11,43 @@ namespace Blog.Core.Services
     public class PostService : IPostService
     {
         private readonly BlogDbContext dbContext;
+        private readonly IImageService imageService;
 
-        public PostService(BlogDbContext dbContext)
+        public PostService(BlogDbContext dbContext, IImageService imageService)
         {
             this.dbContext = dbContext;
+            this.imageService = imageService;
         }
 
-        public void CreatePost(CreatePostModel model)
+        public async Task CreatePost(CreatePostModel model, string userId, string directoryPath)
         {
+            var post = new Post
+            {
+                Content = model.Content,
+                Title = model.Title,
+                UserId = userId,
+            };
 
+            if (model.PhotoPost is not null)
+            {
+                var image = new Image
+                {
+                    AddedByUserId = userId,
+                    Extension = Path.GetExtension(model.PhotoPost.FileName)
+                };
+
+                post.Images.Add(image);
+
+                var physicalPath = $"{directoryPath}{image.Id}.{image.Extension}";
+               await this.imageService.Process(directoryPath, physicalPath, model.PhotoPost);
+            }
+
+            //await this.dbContext.Posts.AddAsync(post);
+           // await this.dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ListSinglePostModel>> GetAllPosts()
-            => await this.dbContext.Posts.AsQueryable()
+            => await this.dbContext.Posts.AsNoTracking()
             .Select(x => new ListSinglePostModel
             {
                 Content = x.Content,
