@@ -2,7 +2,6 @@ using Blog.Core.Contracts;
 using Blog.Core.Services;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Data;
-using Blog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +12,20 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<User>(options => 
+builder.Services.AddDefaultIdentity<User>(options =>
 options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlogDbContext>();
 
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".BlogLoginTime.Session";
+    options.IdleTimeout = TimeSpan.FromSeconds(20);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -27,13 +35,18 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
 });
 
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
 
 builder.Services.AddControllersWithViews()
     .AddCookieTempDataProvider();
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 builder.Services.AddTransient<IPostService, PostService>();
-builder.Services.AddTransient<IImageService,ImageService>();
+builder.Services.AddTransient<IImageService, ImageService>();
 
 var app = builder.Build();
 
@@ -49,13 +62,14 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
+app
+   .UseHttpsRedirection()
+   .UseStaticFiles()
+   .UseCookiePolicy()
+   .UseRouting()
+   .UseAuthentication()
+   .UseAuthorization()
+   .UseSession();
 
 app.MapControllerRoute(
     name: "area",
@@ -64,6 +78,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Run();

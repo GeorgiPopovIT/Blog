@@ -12,12 +12,10 @@ namespace Blog.Core.Services
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            var fileName = currFile.FileName;
 
             using (FileStream stream = new FileStream(physicalPath, FileMode.OpenOrCreate))
-            {
-                await currFile.CopyToAsync(stream);
-            }
+            await currFile.CopyToAsync(stream);
+
         }
     }
 }

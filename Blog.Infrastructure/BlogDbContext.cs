@@ -23,7 +23,7 @@ namespace Blog.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=Blog;Integrated Security=true;");
+            //optionsBuilder.UseSqlServer("Server=.;Database=Blog;Integrated Security=true;");
 
             base.OnConfiguring(optionsBuilder);
         }
