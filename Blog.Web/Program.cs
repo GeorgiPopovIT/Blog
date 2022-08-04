@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -39,10 +40,17 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
+    options.ConsentCookie.Expiration = TimeSpan.FromMinutes(1);
 });
 
 builder.Services.AddControllersWithViews()
     .AddCookieTempDataProvider();
+
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = configuration["Authentication:Facebook:AppId"];
+    options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+});
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 builder.Services.AddTransient<IPostService, PostService>();
@@ -54,6 +62,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    app.UseDeveloperExceptionPage();
 }
 else
 {

@@ -11,7 +11,7 @@
  
    <div id="cookieConsent" class="alert alert-info alert-dismissible fade show" role="alert">
       Use this space to summarize your privacy and cookie use policy.
-      <button type="button" class=" close" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
+      <button type="button" class="btn btn-light accept-policy close" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
          <span aria-hidden="true">Accept</span>
       </button>
    </div>
@@ -24,6 +24,7 @@
 
           button.addEventListener("click", function (event) {
                  document.cookie = button.dataset.cookieString;
+              document.getElementById('cookieConsent').remove();
            }, false);
        })();
   </script>
