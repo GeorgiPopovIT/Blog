@@ -1,11 +1,12 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+	ViewData["Title"] = "Register";
+	Layout = "";
 }
 
 
-<div class="row">
+@*<div class="row">
     <div class="col-md-4 offset-4">
          <h1 class="text-center">@ViewData["Title"]</h1>
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
@@ -65,9 +66,120 @@
             }
         </section>
     </div>
-    
-</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+</div>*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Blog | Registration Page</title>
+
+	<!-- Google Font: Source Sans Pro -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<!-- Font Awesome Icons -->
+	<link rel="stylesheet" href="~/lib/plugins/fontawesome-free/css/all.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="~/lib/dist/css/adminlte.min.css">
+
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/Blog.Web.styles.css" asp-append-version="true" />
+
+	<!-- icheck bootstrap -->
+	<link rel="stylesheet" href="~/lib/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+</head>
+<body class="hold-transition register-page">
+	<div class="register-box">
+		<div class="register-logo">
+			<a asp-controller="Home" asp-action="Index"><b>Blog | Register</b></a>
+		</div>
+
+		<div class="card">
+			<div class="card-body register-card-body">
+				<p class="login-box-msg">Register a new membership</p>
+
+				<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+					<div class="input-group mb-3">
+						<input asp-for="Input.FullName" class="form-control" placeholder="Full name">
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span asp-validation-for="Input.FullName" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<input asp-for="Input.Email" class="form-control" placeholder="Email">
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span asp-validation-for="Input.Email" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<input asp-for="Input.Password" class="form-control" placeholder="Password">
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span asp-validation-for="Input.Password" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm password">
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-8">
+							<div class="icheck-primary">
+								<input type="checkbox" id="agreeTerms" name="terms" value="agree">
+								<label for="agreeTerms">
+									I agree to the <a href="#">terms</a>
+								</label>
+							</div>
+						</div>
+						<!-- /.col -->
+						<div class="col-4">
+							<button type="submit" asp class="btn btn-primary btn-block">Register</button>
+						</div>
+						<!-- /.col -->
+					</div>
+				</form>
+
+				<div class="social-auth-links text-center">
+					<p>- OR -</p>
+					<form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+						<div>
+							<p>
+								@foreach (var provider in Model.ExternalLogins)
+								{
+									<button type="submit" class="btn-block @(provider.Name == "Facebook" ? "btn-primary" :"btn-danger" )" name="provider" value="@provider.Name">
+										<i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+									</button>
+								}
+							</p>
+						</div>
+					</form>
+				</div>
+
+				<a asp-area="Identity" asp-page="/Account/Login" class="text-center">I already have a membership</a>
+			</div>
+			<!-- /.form-box -->
+		</div><!-- /.card -->
+	</div>
+	<!-- /.register-box -->
+	<!-- jQuery -->
+	<script src="~/lib/plugins/jquery/jquery.min.js"></script>
+	<!-- Bootstrap 4 -->
+	<script src="~/lib/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="~/lib/dist/js/adminlte.min.js"></script>
+
+	@*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>*@
+	<partial name="_ValidationScriptsPartial" />
+</body>
+</html>

@@ -18,15 +18,15 @@ options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlogDbContext>();
 
-builder.Services.AddDistributedMemoryCache();
 
-builder.Services.AddSession(options =>
-{
-    options.Cookie.Name = ".BlogLoginTime.Session";
-    options.IdleTimeout = TimeSpan.FromSeconds(20);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
+
+//builder.Services.AddSession(options =>
+//{
+//    options.Cookie.Name = ".BlogLoginTime.Session";
+//    //options.IdleTimeout = TimeSpan.FromSeconds(100);
+//    options.Cookie.HttpOnly = true;
+//    options.Cookie.IsEssential = true;
+//});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -38,6 +38,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
+    options.ConsentCookie.Name = "GorgesConsent";
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
     options.ConsentCookie.Expiration = TimeSpan.FromMinutes(1);
@@ -77,8 +78,8 @@ app
    .UseCookiePolicy()
    .UseRouting()
    .UseAuthentication()
-   .UseAuthorization()
-   .UseSession();
+   .UseAuthorization();
+   //.UseSession();
 
 app.MapControllerRoute(
     name: "area",
