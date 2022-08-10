@@ -1,5 +1,16 @@
-﻿@{
+﻿@model AllPostsViewModel
+@{
 	ViewData["Title"] = "All Posts";
 }
 
-<h1>No posts yet.</h1>
+@if (!this.Model.Posts.Any())
+{
+	<h1>No posts yet.</h1>
+}
+else
+{
+	foreach (var post in this.Model.Posts)
+	{
+		<partial name="_SingleViewPost" model="post"/>
+	}
+}

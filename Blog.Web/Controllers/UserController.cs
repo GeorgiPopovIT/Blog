@@ -8,7 +8,7 @@ namespace Blog.Web.Controllers
     {
         private readonly UserManager<User> userManager;
 
-        public UserController(UserManager<User> userManager )
+        public UserController(UserManager<User> userManager)
         {
             this.userManager = userManager;
         }

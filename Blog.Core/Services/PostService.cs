@@ -36,14 +36,15 @@ namespace Blog.Core.Services
                     Extension = Path.GetExtension(model.PhotoPost.FileName)
                 };
 
+                image.ImageName = image.Id;
                 post.Images.Add(image);
 
-                var physicalPath = $"{directoryPath}{image.Id}.{image.Extension}";
-               await this.imageService.Process(directoryPath, physicalPath, model.PhotoPost);
+                var physicalPath = $"{directoryPath}{image.Id}{image.Extension}";
+                await this.imageService.Process(directoryPath, physicalPath, model.PhotoPost);
             }
 
-            //await this.dbContext.Posts.AddAsync(post);
-           // await this.dbContext.SaveChangesAsync();
+            await this.dbContext.Posts.AddAsync(post);
+            await this.dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ListSinglePostModel>> GetAllPosts()
@@ -52,6 +53,7 @@ namespace Blog.Core.Services
             {
                 Content = x.Content,
                 Title = x.Title,
+                Images = x.Images.Select(i => $"{i.ImageName}{i.Extension}")
             })
             .ToListAsync();
     }

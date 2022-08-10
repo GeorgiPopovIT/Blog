@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Contracts;
 using Blog.Core.Models.Posts;
-using Blog.Web.Extensions;
+using Blog.Web.Common;
+using Blog.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
@@ -9,11 +10,14 @@ namespace Blog.Web.Controllers
     {
         private readonly IPostService postService;
         private readonly IWebHostEnvironment environment;
+        private readonly IUserService userService;
 
-        public PostController(IPostService postService, IWebHostEnvironment environment)
+        public PostController(IPostService postService, IWebHostEnvironment environment,
+            IUserService userService)
         {
             this.postService = postService;
             this.environment = environment;
+            this.userService = userService;
         }
         public IActionResult CreatePost()
         {
@@ -27,20 +31,22 @@ namespace Blog.Web.Controllers
             {
                 return View();
             }
-            var directorySavePath = this.environment.WebRootPath + AppExtension.DirectoryPathSaveImage;
-            var userId = AppExtension.GetUserId(this.User);
+            var directorySavePath = Path.Combine(this.environment.WebRootPath, "img", "posts");
+
+            var userId = this.userService.GetUserId(this.User);
 
             await this.postService.CreatePost(model, userId, directorySavePath);
 
             ViewData["SuccessAdded"] = "Successfully added post.";
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(AllPosts), "Post");
         }
 
         public async Task<IActionResult> AllPosts()
         {
-            //var posts = this.postService.
-            return View();
+            var posts = this.postService.GetAllPosts().Result;
+
+            return View(new AllPostsViewModel(posts));
         }
     }
 }

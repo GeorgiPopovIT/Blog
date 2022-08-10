@@ -23,7 +23,7 @@ options.SignIn.RequireConfirmedAccount = false)
 //builder.Services.AddSession(options =>
 //{
 //    options.Cookie.Name = ".BlogLoginTime.Session";
-//    //options.IdleTimeout = TimeSpan.FromSeconds(100);
+//    options.IdleTimeout = TimeSpan.FromSeconds(100);
 //    options.Cookie.HttpOnly = true;
 //    options.Cookie.IsEssential = true;
 //});
@@ -38,7 +38,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
-    options.ConsentCookie.Name = "GorgesConsent";
+    options.ConsentCookie.Name = "Blog_Consent";
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
     options.ConsentCookie.Expiration = TimeSpan.FromMinutes(1);
@@ -54,8 +54,9 @@ builder.Services.AddAuthentication().AddFacebook(options =>
 });
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
-builder.Services.AddTransient<IPostService, PostService>();
-builder.Services.AddTransient<IImageService, ImageService>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

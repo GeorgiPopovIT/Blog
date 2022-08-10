@@ -30,13 +30,12 @@
         </nav>
     </header>
     <div class="container ">
-        <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-    
     <footer class="border-top footer text-muted" style=" background-color: blanchedalmond">
+         <partial name="_CookieConsentPartial" />
         <div class="container">
             &copy; @DateTime.UtcNow.Year - @ViewData["Title"]
         </div>

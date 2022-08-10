@@ -8,13 +8,6 @@ namespace Blog.Infrastructure.Repositories
         where TEntity : BaseModel<TEntity>
 
     {
-        private readonly BlogDbContext dbContext;
-
-        public GenericRepository(BlogDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-            this.DbSet = dbContext.Set<TEntity>();
-        }
         protected DbSet<TEntity> DbSet { get; set; }
 
         public async Task <IEnumerable<TEntity>> GetAllAsync() => await this.DbSet.ToListAsync();
