@@ -44,7 +44,7 @@ namespace Blog.Web.Controllers
 
         public async Task<IActionResult> AllPosts()
         {
-            var posts = this.postService.GetAllPosts().Result;
+            var posts = await this.postService.GetAllPostsAsync();
 
             return View(new AllPostsViewModel(posts));
         }

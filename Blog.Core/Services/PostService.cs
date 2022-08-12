@@ -47,7 +47,7 @@ namespace Blog.Core.Services
             await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ListSinglePostModel>> GetAllPosts()
+        public async Task<IEnumerable<ListSinglePostModel>> GetAllPostsAsync()
             => await this.dbContext.Posts.AsNoTracking()
             .Select(x => new ListSinglePostModel
             {
