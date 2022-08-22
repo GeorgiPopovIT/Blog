@@ -10,10 +10,8 @@ namespace Blog.Infrastructure.Data
 
         public string? ImageProfile { get; set; }
 
-        
-        public string? ImageId { get; set; }
 
-        public Image Image { get; set; } = null!;
+        public ICollection<Image> Images { get; init; } = new HashSet<Image>();
 
         public ICollection<Post> Posts { get; init; } = new HashSet<Post>();
 

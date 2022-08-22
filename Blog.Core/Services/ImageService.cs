@@ -7,7 +7,6 @@ namespace Blog.Core.Services
     {
         public async Task Process(string directoryPath, string physicalPath, IFormFile currFile)
         {
-            //var path = Path.Combine(directoryPath,)
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);

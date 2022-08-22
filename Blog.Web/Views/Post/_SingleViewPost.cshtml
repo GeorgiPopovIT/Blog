@@ -2,7 +2,7 @@
 @model ListSinglePostModel
 @inject IWebHostEnvironment enviroment
 @{
-	var imageBasePath = $@"{@enviroment.WebRootPath}{Constants.DirectoryPathSaveImage}";
+	//var imageBasePath = $@"{@enviroment.WebRootPath}{Constants.DirectoryPathSaveImage}";
 }
 
 <div class="row">
@@ -24,7 +24,7 @@
 
 				@foreach (var imageUrl in this.Model.Images)
 				{
-					<img  class="img-fluid pad" src="~/img/posts/@imageUrl" alt="Photo" asp-append-version="true">
+					<img class="img-fluid pad" src="~/img/posts/@imageUrl" alt="Photo" asp-append-version="true">
 				}
 
 				<p>@this.Model.Content</p>

@@ -39,7 +39,7 @@ namespace Blog.Core.Services
                 image.ImageName = image.Id;
                 post.Images.Add(image);
 
-                var physicalPath = $"{directoryPath}{image.Id}{image.Extension}";
+                var physicalPath = Path.Combine(directoryPath,$"{image.Id}{image.Extension}"); 
                 await this.imageService.Process(directoryPath, physicalPath, model.PhotoPost);
             }
 
