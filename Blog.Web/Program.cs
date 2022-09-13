@@ -2,11 +2,18 @@ using Blog.Core.Contracts;
 using Blog.Core.Services;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Data;
+using Blog.Infrastructure.Seeding;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+
+var adminName = configuration["AdminProfile:AdministratorName"];
+var adminPassword = configuration["AdminProfile:AdministratorPassword"];
+var adminRoleName = configuration["AdminRoleName"];
+var adminEmail = configuration["AdminEmail"];
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -47,11 +54,13 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 builder.Services.AddControllersWithViews()
     .AddCookieTempDataProvider();
 
-builder.Services.AddAuthentication().AddFacebook(options =>
-{
-    options.AppId = configuration["Authentication:Facebook:AppId"];
-    options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
-});
+builder.Services.AddAuthentication()
+                .AddFacebook(options =>
+                {
+                    options.AppId = configuration["Authentication:Facebook:AppId"];
+                    options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+                })
+                .AddCookie(c => c.ExpireTimeSpan = TimeSpan.FromSeconds(50));
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<IPostService, PostService>();
@@ -59,6 +68,15 @@ builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    await Seeder.Initialize(services, adminName,
+        adminPassword, adminEmail, adminRoleName);
+
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -80,7 +98,7 @@ app
    .UseRouting()
    .UseAuthentication()
    .UseAuthorization();
-   //.UseSession();
+//.UseSession();
 
 app.MapControllerRoute(
     name: "area",
@@ -91,6 +109,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.Run();

@@ -6,7 +6,7 @@ namespace Blog.Infrastructure.Data
     {
 
         [Required]
-        [MaxLength(DataModelsConstants.MaxTitleLength)]
+        [MaxLength(DataConstants.MaxTitleLength)]
         public string? Title { get; set; }
 
         [Required]

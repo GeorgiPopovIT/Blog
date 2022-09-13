@@ -7,7 +7,7 @@ namespace Blog.Infrastructure.Data
     {
 
         [Required]
-        [MaxLength(DataModelsConstants.MaxCommentLength)]
+        [MaxLength(DataConstants.MaxCommentLength)]
         public string? Content { get; set; }
 
         //foreign key
