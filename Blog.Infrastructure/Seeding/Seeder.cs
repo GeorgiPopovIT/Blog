@@ -1,6 +1,7 @@
 ﻿using Blog.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace Blog.Infrastructure.Seeding
 {
@@ -9,18 +10,9 @@ namespace Blog.Infrastructure.Seeding
         public static async Task Initialize(IServiceProvider services, string adminName,
             string adminPassword, string adminEmail, string adminRoleName)
         {
-
-            await Seeder.SeedUserAsAdministrator(adminName,
-         adminPassword, adminEmail, adminRoleName, services);
-        }
-
-        public static async Task SeedUserAsAdministrator(string adminName,
-            string adminPassword, string adminEmail,
-            string adminRoleName, IServiceProvider services)
-        {
-
+            return;
+            
             var userManager = services.GetRequiredService<UserManager<User>>();
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
             var adminUser = new User
             {
@@ -28,6 +20,15 @@ namespace Blog.Infrastructure.Seeding
                 Email = adminEmail,
                 UserName = adminEmail
             };
+
+            await Seeder.SeedUserAsAdministrator(
+         adminPassword,adminRoleName, services, userManager,adminUser);
+        }
+
+        public static async Task SeedUserAsAdministrator(string adminPassword, string adminRoleName,
+            IServiceProvider services, UserManager<User> userManager, User adminUser)
+        {
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
             var result = await userManager.CreateAsync(adminUser, adminPassword);
 

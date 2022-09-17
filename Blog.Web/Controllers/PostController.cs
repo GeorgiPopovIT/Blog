@@ -2,6 +2,7 @@
 using Blog.Core.Models.Posts;
 using Blog.Web.Common;
 using Blog.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
@@ -19,11 +20,14 @@ namespace Blog.Web.Controllers
             this.environment = environment;
             this.userService = userService;
         }
+
+        [Authorize]
         public IActionResult CreatePost()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreatePost(CreatePostModel model)
         {
@@ -42,6 +46,7 @@ namespace Blog.Web.Controllers
             return RedirectToAction(nameof(AllPosts), "Post");
         }
 
+        [Authorize]
         public async Task<IActionResult> AllPosts()
         {
             var posts = await this.postService.GetAllPostsAsync();

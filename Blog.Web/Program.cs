@@ -3,6 +3,7 @@ using Blog.Core.Services;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Seeding;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,17 @@ options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlogDbContext>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.Cookie.HttpOnly = true;
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.Cookie.Name = "LoggedUser";
+    options.LoginPath = "/Identity/Account/Login";
+});
 
+builder.Services.AddControllersWithViews()
+    .AddCookieTempDataProvider();
 
 //builder.Services.AddSession(options =>
 //{
@@ -41,6 +52,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
+
 });
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -48,19 +60,16 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.ConsentCookie.Name = "Blog_Consent";
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
-    options.ConsentCookie.Expiration = TimeSpan.FromMinutes(1);
+    options.ConsentCookie.Expiration = TimeSpan.FromMinutes(2);
 });
-
-builder.Services.AddControllersWithViews()
-    .AddCookieTempDataProvider();
 
 builder.Services.AddAuthentication()
                 .AddFacebook(options =>
                 {
                     options.AppId = configuration["Authentication:Facebook:AppId"];
                     options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
-                })
-                .AddCookie(c => c.ExpireTimeSpan = TimeSpan.FromSeconds(50));
+                });
+                
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<IPostService, PostService>();
@@ -72,6 +81,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+
 
     await Seeder.Initialize(services, adminName,
         adminPassword, adminEmail, adminRoleName);

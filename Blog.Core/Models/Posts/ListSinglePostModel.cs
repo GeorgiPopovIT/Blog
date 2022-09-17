@@ -5,8 +5,12 @@ namespace Blog.Core.Models.Posts
     {
         public string? Title { get; set; }
 
-        public IEnumerable<string> Images { get; set; }
+        public string? CreatedOn { get; set; }
 
-        public string Content { get; set; }
+        public string? UserFullName { get; set; }
+
+        public IEnumerable<string>? Images { get; set; }
+
+        public string? Content { get; set; }
     }
 }

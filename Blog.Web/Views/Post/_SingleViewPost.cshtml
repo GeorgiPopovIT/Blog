@@ -1,9 +1,10 @@
-﻿@using Blog.Web.Common;
-@model ListSinglePostModel
+﻿@model ListSinglePostModel
 @inject IWebHostEnvironment enviroment
 @{
-	//var imageBasePath = $@"{@enviroment.WebRootPath}{Constants.DirectoryPathSaveImage}";
+	var convertedPostDate = DateTime.Parse(Model.CreatedOn).ToLocalTime()
+	.ToString("dddd, dd MMMM yyyy HH:MM");
 }
+
 
 <div class="row">
 	<div class="col-md-6">
@@ -11,16 +12,19 @@
 		<div class="card card-widget">
 			<div class="card-header">
 				<div class="user-block">
-					<img class="img-circle" src="../dist/img/user1-128x128.jpg" alt="User Image">
-					<span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-					<span class="description">Shared publicly - 7:30 PM Today</span>
+					<img class="img-circle" src="~/img/users/@UserDeafultImageAvatar" alt="User Img">
+					<span class="username"><a href="#">@Model.UserFullName</a></span>
+					<span class="description">Shared publicly - @convertedPostDate</span>
+					<div class="mb-3"></div>
 				</div>
 				<!-- /.user-block -->
-				<!-- /.card-tools -->
+				<div class="mb-3"></div>
 			</div>
 			<!-- /.card-header -->
 			<div class="card-body">
-				<h5>@this.Model.Title</h5>
+			@*	<h5>@this.Model.Title</h5>*@
+
+				<div class="mb-3"></div>
 
 				@foreach (var imageUrl in this.Model.Images)
 				{
@@ -50,7 +54,7 @@
 					<!-- /.comment-text -->
 				</div>
 				<!-- /.card-comment -->
-				<div class="card-comment">
+				@*<div class="card-comment">
 					<!-- User image -->
 					<img class="img-circle img-sm" src="../dist/img/user4-128x128.jpg" alt="User Image">
 
@@ -63,9 +67,11 @@
 						by the readable content of a page when looking at its layout.
 					</div>
 					<!-- /.comment-text -->
-				</div>
+				</div>*@
 				<!-- /.card-comment -->
+				<div class="mb-3"></div>
 			</div>
+			<div class="mb-3"></div>
 			<!-- /.card-footer -->
 			<div class="card-footer">
 				<form action="#" method="post">
@@ -76,8 +82,11 @@
 					</div>
 				</form>
 			</div>
+			<div class="mb-5"></div>
 			<!-- /.card-footer -->
 		</div>
+
+		
 		<!-- /.card -->
 	</div>
 </div>

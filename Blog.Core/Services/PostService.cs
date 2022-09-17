@@ -53,7 +53,9 @@ namespace Blog.Core.Services
             {
                 Content = x.Content,
                 Title = x.Title,
-                Images = x.Images.Select(i => $"{i.ImageName}{i.Extension}")
+                Images = x.Images.Select(i => $"{i.ImageName}{i.Extension}"),
+                CreatedOn = x.CreatedOn.ToString(),
+                UserFullName = x.User.FullName
             })
             .ToListAsync();
     }
