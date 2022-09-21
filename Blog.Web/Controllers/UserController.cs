@@ -12,12 +12,5 @@ namespace Blog.Web.Controllers
         {
             this.userManager = userManager;
         }
-        public async Task<IActionResult> GetUserImage(string? id)
-        {
-            var user = await this.userManager.FindByIdAsync(id);
-            var userImage = user.ImageProfile;
-
-            return Ok();
-        }
     }
 }
