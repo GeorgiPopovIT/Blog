@@ -7,6 +7,10 @@ namespace Blog.Core.Contracts
     {
         string GetUserId(ClaimsPrincipal user);
 
-        Task<AdminListUsers> GetAllUsers();
+        AdminListUsers GetAllUsers(string searchTerm);
+
+        IEnumerable<UserListViewModel> GetUsersBySearchItem(string searchTerm);
+
+        Task<string> MakeUserAdmin(string userId,string roleName); 
     }
 }

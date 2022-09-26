@@ -6,6 +6,8 @@
     {
         public IEnumerable<string>? Roles { get; set; }
 
-        public IEnumerable<UserListViewModel>? Users { get; set; }
+        public IEnumerable<UserListViewModel>? Users { get; init; }
+
+        public string? SearchByFullName { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace Blog.Core.Common
 {
-    internal class ModelsConstants
+    internal class Constants
     {
         public const string ModelRequireErrorMessage = "The field is empty.";
 

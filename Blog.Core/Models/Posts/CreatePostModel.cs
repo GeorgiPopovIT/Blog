@@ -7,12 +7,12 @@ namespace Blog.Core.Models.Posts
 {
     public class CreatePostModel
     {
-        [Required(ErrorMessage = ModelsConstants.ModelRequireErrorMessage)]
-        [MinLength(ModelsConstants.PostTitleMinLength, ErrorMessage = ModelsConstants.PostTitleErrorMessageForMinLength)]
+        [Required(ErrorMessage = Constants.ModelRequireErrorMessage)]
+        [MinLength(Constants.PostTitleMinLength, ErrorMessage = Constants.PostTitleErrorMessageForMinLength)]
         public string? Title { get; set; }
 
-        [Required(ErrorMessage = ModelsConstants.ModelRequireErrorMessage)]
-        [MinLength(ModelsConstants.PostContentMinLength, ErrorMessage = ModelsConstants.PostTitleErrorMessageForMinLength)]
+        [Required(ErrorMessage = Constants.ModelRequireErrorMessage)]
+        [MinLength(Constants.PostContentMinLength, ErrorMessage = Constants.PostTitleErrorMessageForMinLength)]
         public string? Content { get; set; }
 
         [AllowedExtensions(new string[] { ".jpg", ".png", ".jpeg" })]

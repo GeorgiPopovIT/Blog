@@ -30,7 +30,7 @@ namespace Blog.Core.CustomValidation
         }
 
         public string GetErrorMessage()
-            => ModelsConstants.PostPhotoExtensionErrorMessage;
+            => Constants.PostPhotoExtensionErrorMessage;
         
     }
 }
