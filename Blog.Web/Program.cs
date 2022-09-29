@@ -3,10 +3,12 @@ using Blog.Core.Services;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Seeding;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -35,8 +37,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Identity/Account/Login";
 });
 
-builder.Services.AddControllersWithViews()
-    .AddCookieTempDataProvider();
+
 
 //builder.Services.AddSession(options =>
 //{
@@ -60,16 +61,36 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.ConsentCookie.Name = "Blog_Consent";
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.None;
-    options.ConsentCookie.Expiration = TimeSpan.FromMinutes(2);
+    options.ConsentCookie.Expiration = TimeSpan.FromMinutes(7);
 });
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+var supportedCultures = new[]
+    {
+        new CultureInfo("en"),
+        new CultureInfo("bg")
+    };
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.SetDefaultCulture("en");
+    options.DefaultRequestCulture = new RequestCulture("en");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
+builder.Services.AddControllersWithViews()
+    .AddMvcLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddCookieTempDataProvider();
 
 builder.Services.AddAuthentication()
                 .AddFacebook(options =>
-                {
-                    options.AppId = configuration["Authentication:Facebook:AppId"];
-                    options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
-                });
-                
+{
+    options.AppId = configuration["Authentication:Facebook:AppId"];
+    options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+});
+
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<IPostService, PostService>();
@@ -106,6 +127,7 @@ app
    .UseStaticFiles()
    .UseCookiePolicy()
    .UseRouting()
+   .UseRequestLocalization()
    .UseAuthentication()
    .UseAuthorization();
 //.UseSession();
@@ -119,6 +141,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-app.UseAuthentication(); ;
+app.UseAuthentication();
 
 app.Run();

@@ -1,4 +1,5 @@
 ﻿using Blog.Web.Models;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -22,6 +23,19 @@ namespace Blog.Web.Controllers
             }
 
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTime.UtcNow.AddMinutes(30),
+                    SameSite = SameSiteMode.Strict }
+            );
+
+            return LocalRedirect(returnUrl);
         }
 
 
