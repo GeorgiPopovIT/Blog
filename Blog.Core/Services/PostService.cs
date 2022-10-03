@@ -12,11 +12,14 @@ namespace Blog.Core.Services
     {
         private readonly BlogDbContext dbContext;
         private readonly IImageService imageService;
+        private ICommentService commentService;
 
-        public PostService(BlogDbContext dbContext, IImageService imageService)
+        public PostService(BlogDbContext dbContext, IImageService imageService,
+            ICommentService commentService)
         {
             this.dbContext = dbContext;
             this.imageService = imageService;
+            this.commentService = commentService;
         }
 
         public async Task CreatePost(CreatePostModel model, string userId, string directoryPath)
@@ -39,7 +42,7 @@ namespace Blog.Core.Services
                 image.ImageName = image.Id;
                 post.Images.Add(image);
 
-                var physicalPath = Path.Combine(directoryPath,$"{image.Id}{image.Extension}"); 
+                var physicalPath = Path.Combine(directoryPath, $"{image.Id}{image.Extension}");
                 await this.imageService.Process(directoryPath, physicalPath, model.PhotoPost);
             }
 
@@ -55,7 +58,8 @@ namespace Blog.Core.Services
                 Title = x.Title,
                 Images = x.Images.Select(i => $"{i.ImageName}{i.Extension}"),
                 CreatedOn = x.CreatedOn.ToString(),
-                UserFullName = x.User.FullName
+                UserFullName = x.User.FullName,
+                CommentsByPost = this.commentService.GetCommentsByPost(x.Id)
             })
             .ToListAsync();
     }
