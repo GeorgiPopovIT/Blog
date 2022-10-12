@@ -2,5 +2,5 @@
 
 namespace Blog.Web.ViewModels
 {
-    public record AllPostsViewModel(IEnumerable<ListSinglePostModel> Posts);
+    public record AllPostsViewModel(IEnumerable<SinglePostViewModel> Posts);
 }

@@ -93,10 +93,10 @@ builder.Services.AddAuthentication()
 
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
-builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddTransient<ICommentService, CommentService>();
 
 var app = builder.Build();
 

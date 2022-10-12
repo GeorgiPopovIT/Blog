@@ -9,6 +9,7 @@ namespace Blog.Core.Services
     public class CommentService : ICommentService
     {
         private readonly BlogDbContext _dbContext;
+
         public CommentService(BlogDbContext dbContext)
         {
             this._dbContext = dbContext;
@@ -29,14 +30,28 @@ namespace Blog.Core.Services
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CommentViewModel>> GetCommentsByPost(int postId)
+        //public async Task<IEnumerable<CommentViewModel>> GetCommentsByPost(int postId)
+        //    => await this._dbContext.Comments
+        //    .Where(c => c.PostId == postId)
+        //    .Select(c => new CommentViewModel
+        //    {
+        //        Content = c.Content,
+        //        UserFullName = c.User.FullName
+        //        // CreatedOn = DateTime.Parse(c.CreatedOn.ToString()).ToLocalTime()
+        //    }).ToListAsync();
+
+        public async Task<IEnumerable<CommentViewModel>> GetCommentsByPostAsync(int postId)
             => await this._dbContext.Comments
-            .AsNoTracking()
             .Where(c => c.PostId == postId)
             .Select(c => new CommentViewModel
             {
                 Content = c.Content,
-                UserFullName = c.User.FullName
+                UserFullName = c.User.FullName,
+                CreatedOn = DateTime.Parse(c.CreatedOn.ToString()).ToLocalTime()
             }).ToListAsync();
+
+        public async Task<int> GetCommentsCountByPost(int postId)
+            => await this._dbContext.Comments.Where(p => p.PostId == postId)
+            .CountAsync();
     }
 }

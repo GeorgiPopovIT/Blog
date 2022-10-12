@@ -7,6 +7,8 @@ namespace Blog.Core.Contracts
     {
         Task CreateComment(CommentInputModel commentToAdd);
 
-        Task<IEnumerable<CommentViewModel>> GetCommentsByPost(int postId);
+        Task<IEnumerable<CommentViewModel>> GetCommentsByPostAsync(int postId);
+
+        Task<int> GetCommentsCountByPost(int postId);
     }
 }

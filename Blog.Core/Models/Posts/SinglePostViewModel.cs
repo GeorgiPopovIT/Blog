@@ -3,8 +3,9 @@ using Blog.Core.Models.Comments;
 
 namespace Blog.Core.Models.Posts
 {
-    public class ListSinglePostModel
+    public class SinglePostViewModel
     {
+        public int PostId { get; init; }
         public string? Title { get; init; }
 
         public string? CreatedOn { get; init; }
@@ -13,7 +14,8 @@ namespace Blog.Core.Models.Posts
 
         public IEnumerable<string>? Images { get; init; }
 
-        public Task<IEnumerable<CommentViewModel>> ? CommentsByPost { get; init; }
+        //public IEnumerable<CommentViewModel>? CommentsByPost { get; init; }
+        public int CommentsCount { get; init; }
 
         public string? Content { get; init; }
     }

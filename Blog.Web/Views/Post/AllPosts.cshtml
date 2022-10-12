@@ -1,7 +1,13 @@
 ﻿@model AllPostsViewModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @{
 	ViewData["Title"] = "All Posts";
+
+	var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
+
+<input id="RequestVerificationToken" type="hidden" value="@requestToken" />
+
 
 @if (!this.Model.Posts.Any())
 {
@@ -13,4 +19,44 @@ else
 	{
 		<partial name="_SingleViewPost" model="post"/>
 	}
+}
+
+@section Scripts{
+	<script>
+		const formElement = document.getElementById('postComment');
+
+		formElement.addEventListener('click', postComment);
+
+		async function postComment() {
+			event.preventDefault();
+
+			const commentValue = formElement.getElementsByTagName('input')[0].value;
+			console.log(commentValue);
+			const data = {
+				content : commentValue,
+				post
+			};
+
+			//try{
+			//	const response = await fetch('/comment/createComment/',{
+			//		method: 'POST',
+			//		headers: {
+			//			'Content-Type' : 'application/json',
+			//			RequestVerificationToken:
+			//				document.getElementById("RequestVerificationToken").value
+			//		},
+			//		body : JSON.stringify(data)
+			//	});
+
+			//	if(response.ok == false){
+			//		throw new Error(`${response.status} ${response.statusText}` - 'Fetch fall');
+			//	}
+
+			//	const content = await response.json();
+
+			//} catch(error){
+			//	console.log(`${error}`)
+			//}
+		}
+	</script>
 }

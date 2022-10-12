@@ -23,6 +23,8 @@ namespace Blog.Web.Controllers
             }
 
             await commentService.CreateComment(inputModel);
+
+            return PartialView();
         }
 
     }

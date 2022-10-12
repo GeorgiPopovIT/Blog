@@ -9,16 +9,18 @@ namespace Blog.Web.Controllers
 {
     public class PostController : Controller
     {
+        private readonly ICommentService commentService;
         private readonly IPostService postService;
         private readonly IWebHostEnvironment environment;
         private readonly IUserService userService;
 
         public PostController(IPostService postService, IWebHostEnvironment environment,
-            IUserService userService)
+            IUserService userService, ICommentService commentService)
         {
             this.postService = postService;
             this.environment = environment;
             this.userService = userService;
+            this.commentService = commentService;
         }
 
         [Authorize]
@@ -49,7 +51,7 @@ namespace Blog.Web.Controllers
         [Authorize]
         public async Task<IActionResult> AllPosts()
         {
-            var posts = await this.postService.GetAllPostsAsync();
+            var posts =  await this.postService.GetAllPostsAsync();
 
             return View(new AllPostsViewModel(posts));
         }

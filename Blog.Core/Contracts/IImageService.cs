@@ -4,6 +4,6 @@ namespace Blog.Core.Contracts
 {
     public interface IImageService
     {
-        public Task Process(string directoryPath, string physicalPath, IFormFile currFile);
+        Task Process(string directoryPath, string physicalPath, IFormFile currFile);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Blog.Core.Contracts;
+using Blog.Core.Models.Comments;
 using Blog.Core.Models.Posts;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Data;
@@ -50,16 +51,16 @@ namespace Blog.Core.Services
             await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ListSinglePostModel>> GetAllPostsAsync()
-            => await this.dbContext.Posts.AsNoTracking()
-            .Select(x => new ListSinglePostModel
+        public async Task<IEnumerable<SinglePostViewModel>> GetAllPostsAsync()
+            => await this.dbContext.Posts
+            .Select(x => new SinglePostViewModel
             {
+                PostId = x.Id,
                 Content = x.Content,
                 Title = x.Title,
                 Images = x.Images.Select(i => $"{i.ImageName}{i.Extension}"),
                 CreatedOn = x.CreatedOn.ToString(),
-                UserFullName = x.User.FullName,
-                CommentsByPost = this.commentService.GetCommentsByPost(x.Id)
+                UserFullName = x.User.FullName
             })
             .ToListAsync();
     }
