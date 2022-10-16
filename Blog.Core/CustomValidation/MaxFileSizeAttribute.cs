@@ -11,10 +11,9 @@ namespace Blog.Core.CustomValidation
             _maxFileSize = maxFileSize;
         }
 
-        protected override ValidationResult IsValid(
-        object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
+            var file = (IFormFile)value;
             if (file != null)
             {
                 if (file.Length > _maxFileSize)
@@ -28,7 +27,7 @@ namespace Blog.Core.CustomValidation
 
         public string GetErrorMessage()
         {
-            return $"Maximum allowed file size is { _maxFileSize} bytes.";
+            return $"Maximum allowed file size is {_maxFileSize} bytes.";
         }
     }
 }

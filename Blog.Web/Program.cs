@@ -1,4 +1,6 @@
 using Blog.Core.Contracts;
+using Blog.Core.EmailSender;
+using Blog.Core.Models.Emails;
 using Blog.Core.Services;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Data;
@@ -36,7 +38,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "LoggedUser";
     options.LoginPath = "/Identity/Account/Login";
 });
-
 
 
 //builder.Services.AddSession(options =>
@@ -91,12 +92,14 @@ builder.Services.AddAuthentication()
     options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
 });
 
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 //builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
 
 var app = builder.Build();
 
