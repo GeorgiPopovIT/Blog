@@ -5,11 +5,13 @@ using Blog.Core.Services;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Data;
 using Blog.Infrastructure.Seeding;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SendGrid.Extensions.DependencyInjection;
+using SendGrid.Helpers.Mail;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +28,7 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<User>(options =>
-options.SignIn.RequireConfirmedAccount = false)
+options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlogDbContext>();
 
@@ -54,7 +56,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-
+    options.User.RequireUniqueEmail = false;
 });
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -92,9 +94,10 @@ builder.Services.AddAuthentication()
     options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
 });
 
-builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
-
-//builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>));
+builder.Services.AddSendGrid(options =>
+    options.ApiKey = builder.Configuration.GetValue<string>("SendGridApiKey")
+                     ?? throw new Exception("The 'SendGridApiKey' is not configured")
+);
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
