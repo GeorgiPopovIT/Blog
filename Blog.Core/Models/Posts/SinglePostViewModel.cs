@@ -17,6 +17,8 @@ namespace Blog.Core.Models.Posts
         //public IEnumerable<CommentViewModel>? CommentsByPost { get; init; }
         public int CommentsCount { get; init; }
 
+        public bool IsUserReact { get; init; }
+
         public string? Content { get; init; }
     }
 }

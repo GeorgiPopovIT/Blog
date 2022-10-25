@@ -13,7 +13,8 @@ namespace Blog.Core.Services
     {
         private readonly BlogDbContext dbContext;
         private readonly IImageService imageService;
-        private ICommentService commentService;
+        private readonly ICommentService commentService;
+        private readonly IReactionService reactionService;
 
         public PostService(BlogDbContext dbContext, IImageService imageService,
             ICommentService commentService)
@@ -51,7 +52,7 @@ namespace Blog.Core.Services
             await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<SinglePostViewModel>> GetAllPostsAsync()
+        public async Task<IEnumerable<SinglePostViewModel>> GetAllPostsAsync(string currentUserId)
             => await this.dbContext.Posts
             .Select(x => new SinglePostViewModel
             {
@@ -60,7 +61,8 @@ namespace Blog.Core.Services
                 Title = x.Title,
                 Images = x.Images.Select(i => $"{i.ImageName}{i.Extension}"),
                 CreatedOn = x.CreatedOn.ToString(),
-                UserFullName = x.User.FullName
+                UserFullName = x.User.FullName,
+                IsUserReact = this.reactionService.IsUserReact(currentUserId, x.Id)
             })
             .ToListAsync();
     }

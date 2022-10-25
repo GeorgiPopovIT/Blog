@@ -6,6 +6,6 @@ namespace Blog.Core.Contracts
     {
         Task CreatePost(CreatePostModel model, string userId, string directoryPath);
 
-        Task<IEnumerable<SinglePostViewModel>> GetAllPostsAsync();
+        Task<IEnumerable<SinglePostViewModel>> GetAllPostsAsync(string currentUserId);
     }
 }
