@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SendGrid.Extensions.DependencyInjection;
 using SendGrid.Helpers.Mail;
+using System.Configuration;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,7 +29,7 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<User>(options =>
-options.SignIn.RequireConfirmedAccount = false)
+options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlogDbContext>();
 
@@ -94,15 +95,22 @@ builder.Services.AddAuthentication()
     options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
 });
 
-builder.Services.AddSendGrid(options =>
-    options.ApiKey = builder.Configuration.GetValue<string>("SendGridApiKey")
-                     ?? throw new Exception("The 'SendGridApiKey' is not configured")
-);
+//builder.Services.AddSendGrid(options =>
+//    options.ApiKey = builder.Configuration.GetValue<string>("SendGridApiKey")
+//                     ?? throw new Exception("The 'SendGridApiKey' is not configured")
+//);
+
+var emailConfig = builder.Configuration
+        .GetSection("EmailConfiguration")
+        .Get<EmailConfiguration>();
+
+builder.Services.AddSingleton(emailConfig);
+
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
+builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
 var app = builder.Build();
 
